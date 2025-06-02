@@ -1,5 +1,5 @@
 from openai import AsyncOpenAI
-from app.core.ai_base import AiClientBase
+from app.core.ai.ai_base import AiClientBase
 
 class OpenAiChat(AiClientBase):
     """OpenAI聊天实现类"""

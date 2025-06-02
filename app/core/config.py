@@ -109,5 +109,9 @@ class Settings(BaseSettings):
     DEEPSEEK_API: str
     DEEPSEEK_MODEL: str = "deepseek-r1-250120"
 
+    # Telegram
+    TELEGRAM_BOT_ROAD_TOKEN: str = ""
+    TELEGRAM_BOT_ROAD_CHAT_ID: str = ""
+
 
 settings = Settings()  # type: ignore
