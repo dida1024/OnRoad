@@ -17,7 +17,7 @@ async def main():
     # 获取并打印当前使用的模型
     model_name = ai_helper.get_model()
     print(f"使用的模型: {model_name}")
-    
+
 
 if __name__ == "__main__":
     asyncio.run(main()) 

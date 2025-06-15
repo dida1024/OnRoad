@@ -113,5 +113,11 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_ROAD_TOKEN: str = ""
     TELEGRAM_BOT_ROAD_CHAT_ID: str = ""
 
+    # Qweather
+    QWEATHER_URL: str = ""
+    QWEATHER_PROJECT_ID: str = ""
+    QWEATHER_KEY_ID: str = ""
+    QWEATHER_KEY: str = ""
+
 
 settings = Settings()  # type: ignore

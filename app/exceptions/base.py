@@ -10,3 +10,8 @@ class ParamException(BizException):
     """参数错误"""
     def __init__(self, message: str = "param error"):
         super().__init__(code=10001,message=message)
+
+class YellowCalendarException(BizException):
+    """黄历异常"""
+    def __init__(self, message: str = "yellow calendar error"):
+        super().__init__(code=10002,message=message)

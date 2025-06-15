@@ -1,6 +1,8 @@
 import enum
 from typing import Dict
 from enum import Enum
+from app.models.messages.commute import CommuteMessage,CommuteType
+
 
 
 class PromptStrategy:
@@ -56,11 +58,45 @@ class PapersSummaryStrategy(PromptStrategy):
                     }
                 """
         return prompt
+    
+class CommuteStrategy(PromptStrategy):
+    """通勤消息生成策略"""
+    def generate(self, message: 'CommuteMessage') -> str:
+        prompt = f"""请根据以下信息生成一条通勤提醒消息，就像是一个普通朋友在和你聊天：
+                1. 通勤类型：{'上班' if message.type == CommuteType.WORK else '回家'}
+                2. 天气信息：
+                - 天气状况：{message.weather.weather}
+                - 温度：{message.weather.temperature}°C
+                - 体感温度：{message.weather.feel_temperature}°C
+                - 湿度：{message.weather.humidity}%
+
+                3. 黄历信息：
+                - 农历：{message.yellow_calendar.lunar or '未知'}
+                - 时辰：{message.yellow_calendar.time}
+                - 宜：{message.yellow_calendar.yi}
+                - 忌：{message.yellow_calendar.ji}
+                - 冲煞：{message.yellow_calendar.chong}
+                - 煞：{message.yellow_calendar.sha}
+                - 节日：{', '.join(message.yellow_calendar.festivals) if message.yellow_calendar.festivals else '无'}
+
+                请用自然的语气生成一条通勤提醒，要求：
+                1. 用简单的问候语开头，就像跟朋友打招呼一样
+                2. 用日常用语描述天气，比如"今天天气不错"这样的简单表达
+                3. 如果黄历信息有意思，可以简单提一下，但不要过度解读
+                4. 如果是节日，用普通的方式送上祝福
+                5. 给出实用的着装建议，用日常对话的方式
+                6. 最后用一句简单的安全提示结尾
+                7. 可以适当用1-2个表情，但不要太多
+                8. 用词要自然，避免过度修饰
+
+                请用中文回复，字数控制在200字以内，要像真人说话一样自然。"""
+        return prompt
 
 
 class PromptType(Enum):
     CHAT = "chat"
     SUMMARY = "summary"
+    COMMUTE = "commute"
 
 class PromptHelper:
     """提示词管理核心类
@@ -73,6 +109,7 @@ class PromptHelper:
     _strategies: Dict[PromptType, PromptStrategy] = {
         PromptType.SUMMARY: SummaryStrategy(),
         PromptType.CHAT: ChatStrategy(),
+        PromptType.COMMUTE: CommuteStrategy(),
     }
 
     @classmethod
@@ -92,11 +129,3 @@ class PromptHelper:
             raise ValueError(f"无效的提示词类型: {prompt_type}")
         
         return strategy.generate(**kwargs)
-
-    @staticmethod
-    def get_prompt(prompt_type: PromptType) -> str:
-        prompts = {
-            PromptType.CHAT: "你是一个AI助手，请回答用户的问题。",
-            PromptType.SUMMARY: "请分析并总结以下文档内容："
-        }
-        return prompts[prompt_type]
