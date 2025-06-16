@@ -7,6 +7,7 @@ from app.models.messages.commute import CommuteMessage, CommuteType, SendType, W
 from app.schemas.road import RoadInfo
 from app.services.yellow_calendar import YellowCalendarProtocol, get_yellow_calendar_service
 from app.core.config import settings
+from app.core.telegram.providers.road_provider import OnRoadBot
 
 class RoadServiceProtocol(Protocol):
     """Road service protocol for dependency injection"""
@@ -38,11 +39,11 @@ class RoadService:
             case SendType.EMAIL:
                 pass
             case SendType.TELEGRAM:
-                ai_message = await self.generate_ai_message(message)
-                print(ai_message)
-                return True
+                async with OnRoadBot() as bot:
+                    ai_message = await self.generate_ai_message(message)
+                    await bot.send_message(ai_message)
             case _:
-                raise ValueError(f"不支持的send_type: {message.send_type}")
+                    raise ValueError(f"不支持的send_type: {message.send_type}")
 
     async def generate_ai_message(self, message: CommuteMessage) -> str:
         ai_helper = AiHelper(OpenAiChat(
