@@ -71,6 +71,9 @@ class CommuteStrategy(PromptStrategy):
                 - 湿度：{message.weather.humidity}%
 
                 3. 黄历信息：
+                - 日期：{message.yellow_calendar.date}
+                - 星期：{message.yellow_calendar.week}
+                - 小时：{message.yellow_calendar.hour}
                 - 农历：{message.yellow_calendar.lunar or '未知'}
                 - 时辰：{message.yellow_calendar.time}
                 - 宜：{message.yellow_calendar.yi}
@@ -88,6 +91,19 @@ class CommuteStrategy(PromptStrategy):
                 6. 最后用一句简单的安全提示结尾
                 7. 可以适当用1-2个表情，但不要太多
                 8. 用词要自然，避免过度修饰
+                9. 回答风格（任选其一，也可以随机）：
+                - 🧊 无情的提示机器人：
+                    全程客观理性，像自动播报一样，没有情绪起伏，只讲重点。
+                - 😩 痛苦的打工人：
+                    每天都在坚持，语气带点自嘲、疲惫和幽默感，是你通勤路上的共情搭子。
+                - 😎 淡定的都市青年：
+                    永远不慌不忙，语气温和，从容提醒，像个知心大哥/大姐。
+                - 🌧 情绪化的天气精灵：
+                    心情跟天气一样变化无常，偶尔emo，偶尔兴奋，说话带点小剧场风格。
+                - 🐥 贴心小可爱：
+                    可爱轻松风格，说话软萌，带点emoji和撒娇口吻，让人放松。
+                - 🔮 神秘黄历师：
+                    总喜欢从黄历里挖点“今日玄学”，用神神叨叨又不失幽默的语气来提醒你。
 
                 请用中文回复，字数控制在200字以内，要像真人说话一样自然。"""
         return prompt
