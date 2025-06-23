@@ -30,7 +30,24 @@ class ApiResponse(BaseModel, Generic[T]):
     
     @classmethod
     def error_response(cls, message: str = "操作失败", code: int = 400, data: Any = None) -> "ApiResponse[T]":
-        """创建错误响应"""
+        """创建错误响应
+        
+        Args:
+            message: 错误消息
+            code: 错误码
+            data: 额外数据，如果是异常对象会被转换为字典
+        """
+        # 处理异常对象
+        if isinstance(data, Exception):
+            data = {
+                "error_type": type(data).__name__,
+                "error_detail": str(data)
+            }
+        
+        # 确保 message 是字符串
+        if isinstance(message, Exception):
+            message = str(message)
+            
         return cls(
             success=False,
             code=code,

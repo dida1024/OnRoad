@@ -45,7 +45,7 @@ class YellowCalendarService:
                     lunar=lunar_date,
                     date=datetime.now().strftime("%Y-%m-%d"),
                     week=wan_nian_data.get("cnWeek", ""),
-                    hour=int(data.get("hour", "")),
+                    hour=str(wan_nian_data.get("hour", "")),
                     festivals=wan_nian_data.get("festivals", None),
                     time=data.get("hour", ""),
                     yi=data.get("yi", ""),
